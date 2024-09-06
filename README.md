@@ -1,115 +1,107 @@
-# TableCheck SWE (js focus) takehome
+# TableCheck SWE Fullstack Take-Home Assignment
 
-## Intro
+Waitlist Manager is a full-stack application designed to handle the waitlist of a restaurant. It manages seating, queueing, and notifications for the diners. The app should replace the use of the usual “pen & paper” solution that many restaurants adopt here in Japan: if the restaurant is at capacity, you enter your name and party size and wait until the waiter calls you.
 
-At TableCheck we believe that the essence of a great software engineer lies in a solid grasp of fundamentals and a well-rounded skill set. This take-home assignment is designed to not only assess your proficiency in JavaScript, but also to gauge the depth and breadth of your understanding in some key areas of software engineering, particularly testing.
+So, the user flow is as follows:
+- A party of diners go to their favorite restaurant. It's fully booked, but the restaurant gives the option to join a virtual waitlist. This comes in the form of a simple SPA reachable via the browser.
+- When the diner opens the app they're asked to input their name and party size.
+- After joining the waitlist, they can check the app to verify if it's their turn.
+- When the table is ready for them, they check-in via the app and get seated.
 
-One of the most challenging and yet most crucial aspects of software development is the ability to read and maintain code written by others. In the real world, writing code from scratch is a rarity compared to the frequency of interacting with existing codebases. In this assignment, you'll be tasked with understanding, critiquing, and improving a pre-existing codebase mostly copied/modified from our existing projects. This will test your ability to quickly adapt to different coding styles and architectures, and to apply best practices in making the code more readable, maintainable, and efficient.
+## Technical Requirements
 
-We're excited to see how you approach these challenges and demonstrate the skills that make a truly exceptional software engineer at TableCheck. Good luck!
+### Frontend
 
-## Other Constraints
+Our tech stack uses ReactJS and TypeScript, but you shouldn’t be limited to that. If you feel more proficient with a different stack, just go for it!
 
-We're not concerned with your level of typescript skill. Typescript is usually very "trivia"-ish, meaning you know it or you don't. This is ok, it can be learned. So don't get worried about having 100% correct types.
+### Backend
 
-We're also not concerned with styling/css in this exercise. Our design team and devs coordinate closely so that our UI toolkits let us create pixel-perfect pages with minimal effort. So don't worry about styling. In fact you don't even need to write a single line of css for this exercise.
+Similarly, while our stack uses Ruby on Rails with MongoDB, you’re free to use any mainstream language/framework and storage.
 
-No additional assistance will be provided for the duration of the takehome. You may use any resources you wish (including LLMs), but you must complete the assignment on your own. No additional questions will be answered about the assignment, including how to run the code, how to interpret the requirements, or how to complete the tasks.
+## Detailed Specifications
 
-This take-home assignment is given to developers of many varying skill levels, depending on your experience, you may not be able to finish all of the tasks in the given time and that's okay! You can still submit the partially complete assignment without being penalized, though we will require you write some documentation outlined in the submission section, testing your asynchronus communication skills and ability to hand over work with minimal friction to other developers.
+1. **Restaurant Capacity**
 
-## Submission
+Hardcoded to 10 seats
 
-Please _Clone_ (not Fork) this repository into your own personal public repository. Each task should be completed in its own commit. Please do not squash commits. Merge all commits into `main`.
+2. **Service Time Calculation**
 
-Write down relevant commit/pr title/descriptions in whatever style/detail you think makes sense. There is no need to follow commitlint or anything like that.
+Hardcoded to 3 seconds per person. Example: A party of 4 takes 12 seconds to complete the service.
 
-If there are any incomplete tasks, please write down in a new `HANDOVER.md` file as many of the following points as possible:
+3. **Joining the waitlist**
 
-- Your understanding of the task.
-- Your process of working on the task and what you've completed.
-- Problems you faced stopping you from completing the task.
-- What is remaining/missing in order to complete the task.
+The diner opens the app that shows:
+- Input: Name
+- Input: Party size
+- Button: “Join Waitlist”. Action:
+    - The party is added to the waitlist queue.
+    - The button changes to “Leave Waitlist”.
 
-When submitting the take-home assignment, simply share the URL to your cloned repo (and ensure that it is set to be publicly accessible).
+4. **Queue management**
 
-## Setup
+When a party completes service:
+- The system checks the queue for the next party.
+- If the seats available are enough for the next party size, the next party’s app shows a new “Check-in” button.
+- If not, wait until enough seats are available.
 
-```bash
-# install
-$ nvm use && npm i
-# generate the openapi client
-$ npm run generate
-# webpack
-$ npm run client:dev
-# ssr
-$ npm run server:dev
-# open api
-$ npm run openapi:dev
-# browser e2e tests
-$ npm run cy:open
-```
+5. **Checking in and starting the service**
 
-You will need to run webpack, ssr, and the mock openapi server to begin debugging.
+- Button: “Check-in”. Action:
+    - The party is removed from the waitlist queue.
+    - The seats availability is increased by the party size.
+    - The service countdown starts for that party size.
 
-## Tasks
+6. **Completing the service**
 
-(1) The "page load" test in `e2e.spec.ts` is not passing. When you visit `/:shop/book` nothing is displayed. You should see "welcome to {{test}}" displayed. Fix the necessary application-level errors to get the test to pass **WITHOUT MODIFYING THE TEST**.
+When the countdown of a service for a certain party reaches 0, the service is completed, and the restaurant’s seat availability is increased by the party size.
 
----
 
-(2) This task is dependent upon the completion of Task (1). The "party size" test in `e2e.spec.ts` is not passing. When you visit `/:shop/book` and click on the button that says "click here to set party size", nothing is displayed. Your task is to implement the functionality to make this test pass **WITHOUT MODIFYING THE TEST**. Note that the required UI implementation must go inside the modal that is displayed when you click the button.
+## Going the extra mile?
+Here are a few ideas if you want to improve the service further. Otherwise, feel free to add your very own feature!
 
-Most of the spec for this feature can be infered from the openapi spec, here are some examples of a valid party size based on the party configuration
+a. **Leaving the waitlist**
 
-```js
-// min=3, max=10, showBaby=true, showChild=true, showSenior=true
-{ children: 1, senior: 1, baby: 1, adult: 0 }
-// 3 is within min and max
-```
+Show the button: “Leave Waitlist” after joining the waitlist. Action:
+- The party is removed from the waitlist queue.
+- The button changes back to “Join Waitlist”.
 
-```js
-// min=3, max=10, showChild=true
-{ children: 0, senior: 0, baby: 0, adult: 3 }
-// 3 is within min and max
-```
+b. **Checking the status**
 
-These would be invalid
+After joining the waitlist, a message on the app displays the current position in the queue.
 
-```js
-// min=3, max=10, showBaby=true, showChild=true, showSenior=true
-{ children: 4, senior: 1, baby: 1, adult: 5 }
-// 11 is greater than max of 10
-```
+c. **Notifications**
 
-```js
-// min=3, max=10, showBaby=true, showChild=true, showSenior=true
-{ children: 1, senior: 0, baby: 0, adult: 1 }
-// 2 is less than min of 3
-```
+The system sends notifications to the client instances when:
+- The party waiting goes in second position (only 1 party ahead of them).
+- The party is next and can check in.
+- 1st late notification: sent 10 seconds after the “Check-in” button has been displayed and not clicked.
+- Cancellation notification: sent 20 seconds after the “Check-in” button has been displayed and not clicked. The party automatically leaves the queue.
 
-Furthermore, min max party size of any given reservation must respect `isGroupOrder`, `minOrderQty` and `maxOrderQty` from the menu context. If the reservation contains a group order menu item, then the party size must be at least `minOrderQty` of said menu item and at most `maxOrderQty` of that menu item. If the reservation does _not_ contain a group order, then the party size respects the shop configuration. In short, group order min/max qty takes precedence over shop configuration.
+d. **Requeue if late**
 
-For the UI you will need to dynamically render the party size selector based on the party configuration. The party configuration is defined in the openapi spec. It is up to you if you want to make this an incremental +1/-1 counter, a number input, a select, etc.
+20 seconds after the “Check-in” button has been displayed and not clicked, the system automatically puts the party back into the queue.
 
-other spec notes:
+## Implementation Guidelines
 
-- adult selector is always shown by default, hence there is no `showAdults` property in the openapi spec
-- min can never be greater than max
-- min can never be 0 or -infinity and defaults to 1
-- max can never be +infinity and defaults to 10
+1. The app should handle multiple instances: the idea is that every instance of the client app allows a new party to join the waiting list concurrently. For example, I can open three tabs of the app I'm mimicking three parties that reached the restaurant and want to join the waitlist by adding their information (name and party size).
+2. Implement proper error handling and validation.
+3. Write clear, maintainable, and well-documented code.
+4. Include unit tests for critical components.
 
----
+## Submission Guidelines
 
-(3) As you can see in the e2e tests, mocking an endpoint requires you to pass in a 2nd parameter callback which can modify the response. This is a bit cumbersome and not great DX; the 2nd parameter should be optional. Your task is to refactor the `OasClientFromSpec` class such that the `producer` callback argument (as shown below) is optional.
+1. Create a public GitHub repository for your project.
+2. Include this README in your repository, with clear instructions for setting up and running the project locally.
+3. Include a brief explanation of your architecture decisions in the README or a separate document.
 
-```ts
-export const client = {
-  "get /shops/:shop 200": function (producer) { // make this optional
-    const faked = jsf.generate({
-      required: [
-```
+## Evaluation Criteria
 
----
+Your submission will be evaluated based on:
 
-(4) No code is perfect, and this project isn't an exception. Based on your own personal perspective, identify how and why the project can be improved from a technical standpoint, and refactor the project accordingly. Include in the commit description your reasons behind the changes and how it improves the project.
+1. Functionality: Does the application work as specified?
+2. Code Quality: Is the code well-structured, readable, and maintainable? Add sufficient comments in places where you think it would help other contributors to onboard more quickly to understand your code.
+3. Architecture: Are there clear separations of concerns and good design patterns used?
+4. User Experience: Is the interface intuitive and responsive?
+5. Testing: Are there adequate unit tests?
+
+### Good luck!
