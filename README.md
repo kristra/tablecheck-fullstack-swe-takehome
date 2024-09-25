@@ -3,7 +3,7 @@
 Waitlist Manager is a full-stack application designed to handle the waitlist of a restaurant. It manages seating, queueing, and notifications for the diners. The app should replace the use of the usual “pen & paper” solution that many restaurants adopt here in Japan: if the restaurant is at capacity, you enter your name and party size and wait until the waiter calls you.
 
 So, the user flow is as follows:
-- A party of diners go to their favorite restaurant. It's fully booked, but the restaurant gives the option to join a virtual waitlist. This comes in the form of a simple SPA reachable via the browser.
+- A party of diners go to their favorite restaurant. It's fully booked, but the restaurant gives the option to join a virtual waitlist. This comes in the form of a simple frontend reachable via the browser and can be implemented however you want. We recommend isomorphic SSR but you can use any pattern you wish such as SPA, islands, traditional SSR, etc.
 - When the diner opens the app they're asked to input their name and party size.
 - After joining the waitlist, they can check the app to verify if it's their turn.
 - When the table is ready for them, they check-in via the app and get seated.
@@ -85,7 +85,7 @@ d. **Requeue if late**
 
 1. The app should handle multiple instances: the idea is that every instance of the client app allows a new party to join the waiting list concurrently. For example, I can open three tabs of the app I'm mimicking three parties that reached the restaurant and want to join the waitlist by adding their information (name and party size).
 2. Implement proper error handling and validation.
-3. Write clear, maintainable, and well-documented code.
+3. Write clear, maintainable, and robust code.
 4. Include unit tests for critical components.
 
 ## Submission Guidelines
