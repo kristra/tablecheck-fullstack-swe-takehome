@@ -18,6 +18,8 @@ Our tech stack uses ReactJS and TypeScript, but you shouldn’t be limited to th
 
 Similarly, while our stack uses Ruby on Rails with MongoDB, you’re free to use any mainstream language/framework and storage.
 
+Whatever database you decide to use, it should be runnable with a simple `docker compose up`.
+
 ## Detailed Specifications
 
 1. **Restaurant Capacity**
@@ -93,6 +95,12 @@ d. **Requeue if late**
 1. Create a public GitHub repository for your project.
 2. Include this README in your repository, with clear instructions for setting up and running the project locally.
 3. Include a brief explanation of your architecture decisions in the README or a separate document.
+
+Please grant access to your repo for these following github users
+
+`lerio` - Valerio Donati, VPoE at TableCheck
+`daniellizik` - Daniel Lizik, Engineering Manager at TableCheck
+`akashgupta-tc` - Akash Gupta, Associate Engineering Manager at TableCheck
 
 ## Evaluation Criteria
 
