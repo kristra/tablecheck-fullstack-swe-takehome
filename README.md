@@ -44,7 +44,7 @@ The diner opens the app that shows a single form with these form elements:
 When the queued party is ready to begin service, the app should display a "check in" button. When clicked:
 
 - The party is removed from the waitlist queue.
-- The number of seats available should be increased by the party size.
+- The number of seats available should be decreased by the party size.
 - The service countdown starts for that party.
 
 Importantly, the user _must_ be able to view the state of their queued party across multiple browser sessions.
