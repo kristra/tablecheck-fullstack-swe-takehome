@@ -11,6 +11,10 @@ export const CreateOrUpdateSession = async (req: NextRequest) => {
   try {
     const { name: userName }: SignUpPayload = await req.json();
 
+    if (!userName) {
+      return NextResponse.json({ message: "error" }, { status: 400 });
+    }
+
     const cookieStore = await cookies();
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
@@ -31,7 +35,10 @@ export const CreateOrUpdateSession = async (req: NextRequest) => {
 
     return NextResponse.json({ message: "success" });
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 });
+    return NextResponse.json(
+      { error: "internal server error" },
+      { status: 500 }
+    );
   }
 };
 
@@ -42,6 +49,9 @@ export const DeleteSession = async () => {
 
     return NextResponse.json({ message: "success" });
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 });
+    return NextResponse.json(
+      { error: "internal server error" },
+      { status: 500 }
+    );
   }
 };

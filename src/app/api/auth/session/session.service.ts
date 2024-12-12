@@ -1,6 +1,4 @@
 import { SignJWT, jwtVerify } from "jose";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 type SessionPayload = {
   userName: string;
@@ -28,15 +26,4 @@ export const decrypt = async (session: string | undefined = "") => {
   } catch (e) {
     console.error(e);
   }
-};
-
-export const verifySession = async () => {
-  const cookie = (await cookies()).get("session")?.value;
-  const session = await decrypt(cookie);
-
-  if (!session?.sessionId) {
-    redirect("/");
-  }
-
-  return { isAuth: true, sessionId: session.sessionId };
 };
