@@ -21,8 +21,14 @@ describe("Session Handler", () => {
 
       const mockCookies = {
         get: vi.fn().mockReturnValue({ value: sessionCookie }),
+        set: vi.fn(),
+        delete: vi.fn(),
+        has: vi.fn().mockResolvedValue(false),
+        size: 0,
+        getAll: vi.fn().mockResolvedValue([]),
+        [Symbol.iterator]: function* () {},
       };
-      vi.mocked(cookies).mockReturnValue(mockCookies);
+      vi.mocked(cookies).mockResolvedValue(mockCookies);
 
       vi.mocked(decrypt).mockResolvedValue(sessionPayload);
 
@@ -37,8 +43,14 @@ describe("Session Handler", () => {
     it("should return isAuth as false if no session is present in cookies", async () => {
       const mockCookies = {
         get: vi.fn().mockReturnValue(undefined),
+        set: vi.fn(),
+        delete: vi.fn(),
+        has: vi.fn().mockResolvedValue(false),
+        size: 0,
+        getAll: vi.fn().mockResolvedValue([]),
+        [Symbol.iterator]: function* () {},
       };
-      vi.mocked(cookies).mockReturnValue(mockCookies);
+      vi.mocked(cookies).mockResolvedValue(mockCookies);
       vi.mocked(decrypt).mockResolvedValue(undefined);
 
       const result = await getDecryptedSession();
@@ -52,8 +64,14 @@ describe("Session Handler", () => {
       const invalidSessionCookie = "invalid-jwt";
       const mockCookies = {
         get: vi.fn().mockReturnValue({ value: invalidSessionCookie }),
+        set: vi.fn(),
+        delete: vi.fn(),
+        has: vi.fn().mockResolvedValue(false),
+        size: 0,
+        getAll: vi.fn().mockResolvedValue([]),
+        [Symbol.iterator]: function* () {},
       };
-      vi.mocked(cookies).mockReturnValue(mockCookies);
+      vi.mocked(cookies).mockResolvedValue(mockCookies);
 
       vi.mocked(decrypt).mockResolvedValue(undefined);
 
