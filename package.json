@@ -9,10 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@prisma/client": "^6.0.1",
     "jose": "^5.9.6",
     "next": "15.1.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
