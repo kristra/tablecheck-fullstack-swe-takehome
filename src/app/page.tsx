@@ -1,23 +1,49 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
+import { FormEvent, useState } from "react";
 
 const HomePage = () => {
+  const router = useRouter();
+
+  const [name, setName] = useState("");
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const result = await fetch("/api/auth/session", {
+        method: "POST",
+        body: JSON.stringify({
+          name,
+        }),
+      });
+
+      if (result) {
+        router.push("/reservations");
+      }
+    } catch (_error) {
+      // do something
+    }
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <h1>Welcome!</h1>
-        <form id="reservationForm">
-          <div className="form-group">
-            <label htmlFor="name">Name:</label>
-            <input type="text" id="name" name="name" required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="partySize">Party Size:</label>
-            <input type="number" id="partySize" name="partySize" required />
-          </div>
-          <button type="submit">Submit</button>
-        </form>
-      </main>
-      <footer className={styles.footer}>footer</footer>
+    <div className={styles.screenContainer}>
+      <h1 className={styles.screenTitle}>Welcome!</h1>
+      <p className={styles.screenSubtitle}>
+        Please enter your name to continue
+      </p>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          className={styles.inputField}
+          placeholder="Enter your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <button className={styles.continueBtn}>Continue</button>
+      </form>
     </div>
   );
 };
