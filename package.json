@@ -6,11 +6,14 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "start:worker": "npx tsx --watch src/workers/waitingList.worker.ts",
     "lint": "next lint",
     "test": "vitest"
   },
   "dependencies": {
     "@prisma/client": "^6.0.1",
+    "bullmq": "^5.34.0",
+    "ioredis": "^5.4.1",
     "jose": "^5.9.6",
     "next": "15.1.0",
     "react": "^19.0.0",

@@ -1,3 +1,4 @@
+import { waitingList } from "../../../lib/bullmq";
 import prisma from "../../../lib/prisma";
 import { getDecryptedSession } from "../auth/session/session.handler";
 
@@ -67,6 +68,8 @@ export const updateReservationStatus = async (id: number, status: number) => {
     data: { status },
     where: { id, sessionId: session.sessionId },
   });
+
+  await waitingList.add("addCustomer", result);
 
   return result;
 };

@@ -1,18 +1,27 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 
-const ReservationDetailPage = () => {
+const ReservationDetailPage = ({ params }) => {
   const router = useRouter();
-  const [isCheckedIn, setIsCheckedIn] = useState(false);
 
-  const handleCheckIn = () => {
-    // Simulate check-in process, and maybe store a status
-    setIsCheckedIn(true);
-    alert("You have successfully checked in!");
-    router.push("/"); // Redirect back to the welcome screen or home page
+  const id = params.id;
+
+  const handleCheckIn = async () => {
+    try {
+      const response = await fetch(`/api/reservations/${id}`, {
+        method: "PUT",
+      });
+
+      const result = await response.json();
+
+      if (result) {
+        router.push(`/reservations/${result.id}`);
+      }
+    } catch (_error) {
+      // do something
+    }
   };
 
   return (
@@ -20,7 +29,8 @@ const ReservationDetailPage = () => {
       <h1 className={styles.screenTitle}>Check-in</h1>
       <p className={styles.screenSubtitle}>Click below to check-in</p>
       <button onClick={handleCheckIn} className={styles.checkinBtn}>
-        {isCheckedIn ? "Checked In" : "Check In"}
+        {/* {isCheckedIn ? "Checked In" : "Check In"} */}
+        Check In
       </button>
     </div>
   );
